@@ -15,6 +15,27 @@
       "when": 1788199582791,
       "tag": "0001_eminent_proudstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788202499003,
+      "tag": "0002_lovely_ezekiel_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788218006225,
+      "tag": "0003_fancy_lester",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788218603011,
+      "tag": "0004_cooing_moondragon",
+      "breakpoints": true
     }
   ]
 }

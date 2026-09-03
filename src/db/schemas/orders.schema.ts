@@ -1,12 +1,12 @@
 import { decimal, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { UsersTable } from "./users-schema";
+import { UsersTable } from "./users.schema";
 
 export const OrderStatusEnum = pgEnum('orderStatus', ['pending_payment', 'paid', 'in_production', 'shipped', 'delivered', 'canceled'])
 
 export const OrdersTable = pgTable('orders', {
-    id: uuid('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
     userId: uuid('user_id').references(() => UsersTable.id).notNull(),
-    status: OrderStatusEnum('status').default('pending_payment'),
+    status: OrderStatusEnum('status').default('pending_payment').notNull(),
     total: decimal('total', {precision: 10, scale: 2}).notNull(),
     shippingCost: decimal('shipping_cost', {precision: 10, scale: 2}).notNull(),
     trackingCode: varchar('tracking_code'),

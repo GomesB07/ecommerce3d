@@ -1,11 +1,11 @@
 import { decimal, integer, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { OrdersTable } from "./orders-schema";
-import { ProductsTable } from "./products-schema";
+import { OrdersTable } from "./orders.schema";
+import { ProductsTable } from "./products.schema";
 
 
 
 export const OrderItemsTable = pgTable('orderItems', {
-    id: uuid('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
     orderId: uuid('order_id').references(() => OrdersTable.id, {onDelete: 'cascade'}).notNull(),
     productId: uuid('product_id').references(() => ProductsTable.id, {onDelete: 'cascade'}).notNull(),
     variationLabel: varchar('variation_label').notNull(),
