@@ -1,0 +1,1 @@
+ALTER TABLE "productVariations" ALTER COLUMN "price_modifier" SET DEFAULT '0';

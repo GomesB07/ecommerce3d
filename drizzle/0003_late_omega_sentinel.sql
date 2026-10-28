@@ -1,0 +1,1 @@
+ALTER TABLE "refreshToken" ALTER COLUMN "expires_at" SET NOT NULL;

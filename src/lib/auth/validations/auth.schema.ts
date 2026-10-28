@@ -15,3 +15,11 @@ export const loginUserSchema = z.object({
 })
 
 export type LoginInput = z.infer<typeof loginUserSchema>
+
+export const updateUserSchema = z.object({
+    name: z.string().min(2, 'Nome muito curto').optional(),
+    email: z.email('Email inválido').optional(),
+    phone: z.string().optional()
+})
+
+export type updateUserInput = z.infer<typeof updateUserSchema>

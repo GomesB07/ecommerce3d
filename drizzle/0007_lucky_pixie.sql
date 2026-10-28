@@ -1,0 +1,1 @@
+ALTER TABLE "productVariations" ADD COLUMN "active" boolean DEFAULT true NOT NULL;

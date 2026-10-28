@@ -1,6 +1,6 @@
 {
-  "id": "ffbc5a7b-17ab-46e2-a9c1-769a7698981e",
-  "prevId": "1e06db47-8235-4846-9d0c-3b003f2c1ac5",
+  "id": "45f2fdd4-6794-49f2-8c7d-1bff4ce05621",
+  "prevId": "309cf675-e587-42ea-b4a1-8b6a4bc537fa",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -12,7 +12,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -43,7 +44,7 @@
           "type": "roles",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'customer'"
         },
         "created_at": {
@@ -91,7 +92,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -123,11 +125,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "filaments_id": {
+          "name": "filaments_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "active": {
           "name": "active",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": true
         },
         "created_at": {
@@ -145,16 +153,23 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "products_filaments_id_filaments_id_fk": {
+          "name": "products_filaments_id_filaments_id_fk",
+          "tableFrom": "products",
+          "tableTo": "filaments",
+          "columnsFrom": [
+            "filaments_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "products_name_unique": {
-          "name": "products_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        },
         "products_slug_unique": {
           "name": "products_slug_unique",
           "nullsNotDistinct": false,
@@ -175,7 +190,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "product_id": {
           "name": "product_id",
@@ -188,6 +204,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "filament_color_id": {
+          "name": "filament_color_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "order": {
           "name": "order",
@@ -223,6 +245,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "productsImage_filament_color_id_filamentsColor_id_fk": {
+          "name": "productsImage_filament_color_id_filamentsColor_id_fk",
+          "tableFrom": "productsImage",
+          "tableTo": "filamentsColor",
+          "columnsFrom": [
+            "filament_color_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -239,7 +274,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "product_id": {
           "name": "product_id",
@@ -297,7 +333,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -315,7 +352,7 @@
           "name": "active",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": true
         },
         "created_at": {
@@ -356,7 +393,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "user_id": {
           "name": "user_id",
@@ -369,7 +407,7 @@
           "type": "orderStatus",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'pending_payment'"
         },
         "total": {
@@ -440,7 +478,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "order_id": {
           "name": "order_id",
@@ -523,7 +562,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "order_id": {
           "name": "order_id",
@@ -548,7 +588,7 @@
           "name": "email_sent",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": false
         },
         "created_at": {
@@ -577,6 +617,86 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.filamentsColor": {
+      "name": "filamentsColor",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "color_value": {
+          "name": "color_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "filament_id": {
+          "name": "filament_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "filamentsColor_filament_id_filaments_id_fk": {
+          "name": "filamentsColor_filament_id_filaments_id_fk",
+          "tableFrom": "filamentsColor",
+          "tableTo": "filaments",
+          "columnsFrom": [
+            "filament_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "filamentsColor_name_unique": {
+          "name": "filamentsColor_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

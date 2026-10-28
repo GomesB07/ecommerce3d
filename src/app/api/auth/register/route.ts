@@ -3,33 +3,43 @@ import { registerUser } from "@/services/auth.service";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
 
     try {
-        const body = await request.json()
-        const parsed = registerUserSchema.safeParse(body)
+        const body = await req.json()
+        const parse = registerUserSchema.safeParse(body)
 
-        if(!parsed.success) {
-            return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 })
+        if(!parse.success) {
+            return NextResponse.json('Erro ao criar usuário')
         }
 
-        const {newUser, token} = await registerUser(parsed.data)
+        const {newUser, token, refreshTokenId} = await registerUser(parse.data)
 
         const cookieStore = await cookies()
-        cookieStore.set('token', token, {httpOnly: true, maxAge: 86400})
+        cookieStore.set('token', token, {
+            httpOnly: true,
+            maxAge: 60 * 15,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/'
+        })
+        cookieStore.set('refreshTokenId', refreshTokenId, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/'
+        })
 
-        const { passwordHash, ...safeUser } = newUser
-
-        return NextResponse.json(safeUser, { status: 201 })
-
-    } catch (error) {
-
-        if(error instanceof Error && error.message === 'Email já cadastrado') {
-            return NextResponse.json({ error: error.message }, { status: 409 })
+        const user = {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email
         }
-        return NextResponse.json({ error: 'Erro interno ao criar usuário '}, { status: 500 })
+
+        return NextResponse.json(user, {status: 200})
+
+    } catch(error) {
+        return NextResponse.json({error: (error as Error).message}, {status: 400})
     }
-
-
 }
